@@ -2,10 +2,10 @@ name: Fetch
 
 on:
   push:
-    branches: [ master ]
+    branches: [ teller_import_integration ]
   
   pull_request:
-    branches: [ master ]
+    branches: [ teller_import_integration ]
 
   schedule:
     - cron:  '*/5 * * * *'
