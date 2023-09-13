@@ -7,12 +7,11 @@ on:
   pull_request:
     branches: [ master ]
 
-  # schedule:
-  #   - cron:  '0 * * * *'
+  schedule:
+    - cron:  '*/5 * * * *'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -24,10 +23,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    # Decode TELLER_CERTIFICATE secret and write to teller_certificate.pem
+    - name: Decode TELLER_CERTIFICATE and save as .pem
+      run: |
+        echo "${{ secrets.TELLER_CERTIFICATE }}" | base64 -d > teller_certificate.pem
+
+    # Decode TELLER_PRIVATE_KEY secret and write to teller_private_key.pem
+    - name: Decode TELLER_PRIVATE_KEY and save as .pem
+      run: |
+        echo "${{ secrets.TELLER_PRIVATE_KEY }}" | base64 -d > teller_private_key.pem
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
     - run: npm install
     - run: npm run build
     - run: node ./lib/scripts/cli.js fetch --ci
