@@ -7,8 +7,8 @@ on:
   pull_request:
     branches: [ teller_import_integration ]
 
-  schedule:
-    - cron:  '*/5 * * * *'
+  # schedule:
+  #   - cron:  '*/5 * * * *'
 
 jobs:
   build:
